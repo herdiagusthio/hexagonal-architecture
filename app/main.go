@@ -25,7 +25,7 @@ import (
 func newDatabaseConnection(confg *config.AppConfig) *gorm.DB {
 	configDB := map[string]string{
 		"DB_Username": os.Getenv("GOHEXAGONAL_DB_USERNAME"),
-		"DB_Password": os.Getenv("GOHEXAGONAL_DB_PASSWOR"),
+		"DB_Password": os.Getenv("GOHEXAGONAL_DB_PASSWORD"),
 		"DB_Port":     os.Getenv("GOHEXAGONAL_DB_PORT"),
 		"DB_Host":     os.Getenv("GOHEXAGONAL_DB_HOST"),
 		"DB_Name":     os.Getenv("GOHEXAGONAL_DB_NAME"),
@@ -33,11 +33,10 @@ func newDatabaseConnection(confg *config.AppConfig) *gorm.DB {
 
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		configDB["DB_Username"],
-		configDB["DB_Passwor"],
+		configDB["DB_Password"],
 		configDB["DB_Host"],
 		configDB["DB_Port"],
 		configDB["DB_Name"])
-
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -72,7 +71,7 @@ func main() {
 
 	// run servr
 	go func() {
-		address := fmt.Sprintf("localhost:%d", config.AppPort)
+		address := fmt.Sprintf("localhost:%d", 3000)
 
 		if err := e.Start(address); err != nil {
 			log.Info("shutting down the server")

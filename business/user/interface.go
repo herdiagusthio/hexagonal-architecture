@@ -3,7 +3,7 @@ package user
 //Service outgoing port for user
 type Service interface {
 	//FindUserByID If data not found will return nil without error
-	FindUserByID()
+	FindUserByID(id int) (*FindUser, error)
 
 	// //FindUserByUsernameAndPassword If data not found will return nil
 	// FindUserByUsernameAndPassword(username string, password string) (*User, error)
@@ -21,7 +21,7 @@ type Service interface {
 //Repository ingoing port for user
 type Repository interface {
 	//FindUserByID If data not found will return nil without error
-	FindUserByID()
+	FindUserByID(id int) (*FindUser, error)
 
 	// //FindUserByUsernameAndPassword If data not found will return nil
 	// FindUserByUsernameAndPassword(username string, password string) (*User, error)

@@ -11,6 +11,6 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s *service) FindUserByID() {
-	
+func (s *service) FindUserByID(id int) (*FindUser, error) {
+	return s.repository.FindUserByID(id)
 }
