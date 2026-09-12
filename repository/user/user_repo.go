@@ -52,7 +52,10 @@ func (r *GormRepository) FindUserByID(id int) (*user.FindUser, error) {
 
 	err := r.DB.First(&userData, id).Error
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, user.ErrUserNotFound
+		}
+		return nil, fmt.Errorf("database error: %w", err)
 	}
 
 	user := userData.ToUser()
