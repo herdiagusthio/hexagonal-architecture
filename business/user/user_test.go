@@ -67,7 +67,10 @@ func TestModifyUser(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := original.ModifyUser(tt.newName, tt.newPhone, time.Now())
+			got, err := original.ModifyUser(tt.newName, tt.newPhone, time.Now())
+			if err != nil {
+				t.Fatalf("ModifyUser() unexpected error: %v", err)
+			}
 			if got.Name != tt.wantName || got.PhoneNumber != tt.wantPhone {
 				t.Errorf("ModifyUser() = %v, %v; want %v, %v", got.Name, got.PhoneNumber, tt.wantName, tt.wantPhone)
 			}

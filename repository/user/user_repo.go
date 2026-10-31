@@ -1,6 +1,8 @@
 package user
 
 import (
+	"errors"
+	"fmt"
 	"hexagonalArchitecture/business/user"
 	"time"
 
@@ -24,19 +26,19 @@ type UserTable struct {
 	DeletedAt   time.Time `gorm:"deleted_at"`
 }
 
+// ToUser maps a row to the domain model. Stored rows are trusted as-is; validation happens where
+// users are created (user.NewUser), so Email and Username convert without re-checking.
 func (col *UserTable) ToUser() user.FindUser {
-	var user user.FindUser
-
-	user.ID = col.ID
-	user.Name = col.Name
-	user.Email = col.Email
-	user.PhoneNumber = col.PhoneNumber
-	user.Username = col.Username
-	user.CreatedAt = col.CreatedAt
-	user.UpdatedAt = col.UpdatedAt
-	user.DeletedAt = &col.DeletedAt
-
-	return user
+	return user.FindUser{
+		ID:          col.ID,
+		Name:        col.Name,
+		Email:       user.Email(col.Email),
+		PhoneNumber: col.PhoneNumber,
+		Username:    user.Username(col.Username),
+		CreatedAt:   col.CreatedAt,
+		UpdatedAt:   col.UpdatedAt,
+		DeletedAt:   &col.DeletedAt,
+	}
 }
 
 //NewGormDBRepository Generate Gorm DB user repository
